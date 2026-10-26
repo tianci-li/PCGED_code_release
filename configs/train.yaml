@@ -1,0 +1,67 @@
+model:
+  n_genes: 60664
+  n_expr_bins: 26
+  n_expr_levels: 9
+  n_pathways: 2000
+  d_model: 2048
+  n_layers: 24
+  n_heads: 16
+  d_ff: 5504
+  dropout: 0.1
+  max_seq_len: 8192
+  pathway_encoder_type: discrete
+  n_pathway_tokens: 8
+  n_global_pathway_tokens: 2
+  pathway_hidden_dim: 2048
+  pathway_fusion_layers: 2
+  use_flash_attention: true
+  use_gradient_checkpointing: true
+  tie_word_embeddings: false
+  pathway_masking_enabled: true
+  pathway_curriculum_phase0_end: 0.333
+  pathway_curriculum_phase1_end: 0.500
+  pathway_curriculum_phase2_end: 0.667
+  pathway_curriculum_k_phase1: 5
+  pathway_curriculum_k_max_ratio: 0.85
+  pathway_curriculum_phase3_dropout: 0.08
+  pathway_masking_total_steps: 15000
+  pathway_interpolation_enabled: true
+  pathway_interpolation_mode: mixed
+  pathway_interpolation_strategy: smoothstep
+  pathway_interpolation_mix_ratio: 0.70
+  pathway_aux_head_enabled: true
+data:
+  index_folder: training_data/index
+  global_index: training_data/line_count.json
+  cell_description: training_data/cell_labels.csv
+  gene_location_list_path: training_data/gene_location_list.json
+  csv_filepath: training_data/csv
+  pathway_db_path: training_data/pathway_database_ensembl.pkl
+  max_len: 8192
+  anonymous: true
+  batch_size: 4
+  num_workers: 4
+  n_expr_bins: 20
+  use_global_binning: true
+  pathway_method: combined
+  min_pathway_genes: 5
+  max_pathway_genes: 500
+  pathway_num_bins: 5
+training:
+  lr_groups:
+    bin_patterns:
+      - "^gene_expr_embedding\\.expr_bin_embedding\\."
+      - "^expr_bin_head\\."
+    lr_bin: 1.25e-5
+    lr_backbone: 3.0e-6
+    weight_decay: 0.1
+  loss_weights:
+    gene_loss: 1.0
+    expr_bin_loss: 0.5
+    expr_level_loss: 0.3
+    pathway_loss: 0.20
+    pathway_loss_type: smooth_l1
+    pathway_loss_use_sigmoid: true
+    eos_loss: 0.05
+    eos_pos_weight: 24.0
+seed: 20260427
