@@ -2,6 +2,14 @@
 
 This package contains the PCGED training and inference code with the expression-bin patch.
 
+## Availability
+
+- GitHub: https://github.com/tianci-li/PCGED_code_release
+- Zenodo archive: https://doi.org/10.5281/zenodo.23670427
+- Zenodo record: https://zenodo.org/records/23670427
+
+The trained model weights are not distributed through GitHub or Zenodo. They remain hosted server-side and are available only for fixed-checkpoint inference through the designated GPU platform.
+
 ## Structure
 
 - `pcged.py`: command-line entry point
